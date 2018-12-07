@@ -1,0 +1,49 @@
+%% Example requirements and subrequirements
+% \requirement{Foo}
+% Dummy text
+% \subrequirement{Bar}
+% More dummy text
+
+%%% DELETE ALL CONTENT BELOW HERE AND PUT IN YOUR OWN USING EXAMPLE ABOVE
+\begin{itshape}
+\color{red}<Note to RFP Editors: Describe the requirements that proposals should satisfy. Avoid requirements that unnecessarily constrain viable solutions or implementation approaches. 
+
+Mandatory requirements shall be stated using phrases such as:
+
+"Proposals shall provide...", or
+
+"Proposals shall support the ability to..."
+
+Describe any modeling-related requirements.
+
+Some guidelines for modeling requirements:
+
+A PIM and one or more PSMs may be mandated by the RFP. RFPs may call for the specification of a PIM corresponding to one or more pre-existing PSMs, or for one or more PSMs corresponding to a pre-existing PIM. 
+
+If an RFP requests a PIM, it shall state explicitly of what technology or technologies the PIM shall be independent. For example, an RFP might state that a PIM should be independent of programming languages, distributed component middleware and messaging middleware. If an RFP requests a PSM, it shall state explicitly to what technology or technologies the PSM shall be specific, such as CORBA, XML, J2EE etc.
+
+If it is anticipated that a related PIM, PSM or mapping will be requested by a successor RFP, that fact should be mentioned.
+
+MDA RFPs usually fall into one of these five categories:
+\begin{enumerate}
+\item Service specifications (Domain-specific, cross-domain or middleware services).
+
+For RFPs for service specifications, "Platform" usually refers to middleware, so "Platform Independent" means independent of middleware, and "Platform Specific" means specific to a particular middleware platform. Such RFPs should typically mandate use of UML to specify any necessary PIMs. If you deviate from this drafting guideline, be prepared to defend you decision when your draft RFP is reviewed.
+
+Furthermore, such RFPs may require a submitted PSM to be expressed in a UML profile or MOF-compliant language that is specific to the platform concerned (e.g. for a CORBA-specific model, the UML profile for CORBA [CORP]). Alternatively, the RFP may require that the PSM be expressed in the language that is native to the platform in question (e.g. IDL). If the RFP requests both, make clear which one is to be normative.
+\item Data Models
+
+In pure data modelling a PIM is independent of any data representation syntax, and a PSM is derived by mapping that PIM onto one particular data representation syntax. Such RFPs should typically mandate that submitted data models to be expressed using one of the following OMG modelling languages: UML, CWM, MOF, SBVR. 
+\item Language Specification
+
+RFPs requesting language specifications should mandate that the language's abstract syntax be specified as a MOF-compliant metamodel
+\item Mapping Specifications
+
+Such RFPs should mandate that responses provide a transformation model and/or textual correspondence description.
+\item Network Protocol Specifications
+
+It's possible to view a network transport layer as a platform, and therefore to apply a PIM/PSM split to specifying a network protocol - for instance, one could view GIOP as a PIM relative to transport, and IIOP as a PSM that realizes this PIM for one specific transport layer protocol (TCP/IP). Such RFPs should therefore mandate that proposals specify, protocols with an appropriate PIM/PSM separation. Submitted models may include the protocol data elements and sequences of interactions as appropriate.>
+\end{enumerate}
+\end{itshape}
+
+

@@ -1,0 +1,191 @@
+\ProvidesPackage{omg}
+%% Basic formatting for Object Management Group documents
+
+%% Fine tuning of margins
+\newlength{\myparindent}
+\setlength{\myparindent}{0.5in}
+% start with equal margins
+\newlength{\margins}
+\setlength{\margins}{1.25in}
+% left = 1.25in + \myparindent
+\newlength{\newleft}
+\setlength{\newleft}{\margins}
+\addtolength{\newleft}{1\myparindent}
+\usepackage[letterpaper, tmargin=1in, bmargin=1in, left=1\newleft, right=\margins, marginpar=1in]{geometry}
+
+%% Control indenting of paragraphs and headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage[colorlinks=true,urlcolor=cyan,linkcolor=blue,linktoc=page]{hyperref}
+
+%% Draft watermark
+\usepackage{everypage}
+\usepackage{draftwatermark}
+% See RFP_UserPreamble.tex to turn off
+
+%% Control fonts
+%% Use Helvetica font for titles
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+
+%% Use Times font for body
+\usepackage{times}
+
+%% IPR handling
+\usepackage{ifthen}
+
+%% Make appendix have same numbering as other sections
+\usepackage[title]{appendix}
+
+%% The following items are *ONLY* for the red italic notes in stub text
+\usepackage{textcomp}
+\usepackage{color}
+
+% For future use with Jira and auto changebar doc production
+\usepackage{changebar}
+\usepackage{marginnote}
+
+% \adjustwidth
+\usepackage{changepage}
+
+%% Set header offsets and styles
+\usepackage[raggedright]{titlesec}
+\titlespacing\section{-1\myparindent}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsection{-1\myparindent}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{-1\myparindent}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing\paragraph{-1\myparindent}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+% show paragraph numbering
+\setcounter{secnumdepth}{8}
+
+% Paragraph titles are italicized
+\titleformat{\section}{\sffamily\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\sffamily\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}{\itshape}{\theparagraph}{0.75em}{}
+
+\usepackage{xspace}
+\newcommand{\setvalue}[2]{
+    \ifdefined #1
+        \renewcommand{#1}{#2\xspace}
+    \else
+        \newcommand{#1}{#2\xspace}
+    \fi
+}
+
+% Requirement and subrequirement sections for 6.5
+\usepackage{titletoc}
+\titleclass{\requirement}{straight}[\subsection]
+\newcounter{requirement}[subsection]
+\setvalue{\reqlabel}{REQ}
+\titleformat{\requirement}
+  {\sffamily\normalsize\bfseries}{}{0em}{\reqlabel \therequirement:~}
+\titlespacing*{\requirement}{-1\myparindent}{0pt}{0pt}
+\newcommand{\requirementautorefname}{requirement}
+\titlecontents{requirement}[0pt]{}{}{}{}
+
+\titleclass{\subrequirement}{straight}[\requirement]
+\newcounter{subrequirement}[requirement]
+\setvalue{\subreqlabel}{REQ}
+\titleformat{\subrequirement}
+  {\sffamily\normalsize\bfseries\itshape}{}{0em}{\subreqlabel \therequirement.\thesubrequirement:~}
+\titlespacing*{\subrequirement}{0pt}{0pt}{0pt}
+\newcommand{\subrequirementautorefname}{subrequirement}
+\titlecontents{subrequirement}[0pt]{}{}{}{}
+
+
+%% New parameters to fill in by automated tooling
+\newcommand{\REPLACEME}[1]{\textit{\color{red}#1}}
+\setvalue{\specname}{\REPLACEME{Specification Name Placeholder}}
+\setvalue{\specacro}{\REPLACEME{Placeholder}}
+\setvalue{\docnum}{\REPLACEME{<taskforce>/YY-MM-NN}}
+\setvalue{\loidue}{\REPLACEME{<day><month><year>}}
+\setvalue{\subdue}{\REPLACEME{<day><month><year>}}
+\setvalue{\votereg}{\REPLACEME{<day><month><year>}}
+\setvalue{\subpres}{\REPLACEME{<day><month><year>}}
+\setvalue{\rsubdue}{\REPLACEME{<day><month><year>}}
+\setvalue{\rsubpres}{\REPLACEME{<day><month><year>}}
+
+%% for IPR mode
+\setvalue{\iprmode}{}
+
+\title{\REPLACEME{<Title>}}
+
+%% No indent on paragraphs
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+%% Header and footer
+\renewcommand{\headrulewidth}{0pt}
+\lhead{\hspace*{-\myparindent}\small\docnum}
+\rhead{}
+\setvalue{\leftfooter}{}% set in enclosing document or style (i.e. omg_rfp.sty)
+\lfoot{\hspace*{-\myparindent}\footnotesize {\leftfooter}}
+\cfoot{\hspace*{-0.5\myparindent}\footnotesize\today}
+\rfoot{\footnotesize\thepage}
+
+\setcounter{tocdepth}{2}
+
+%% Margin comments
+\usepackage{soul}  % highlighting
+\usepackage[backgroundcolor=lightgray,textwidth=\marginparwidth,textsize=scriptsize]{todonotes}  % margin comment
+\newcounter{mycomment}
+\newboolean{hidecomments}
+\setboolean{hidecomments}{false}
+\makeatletter
+\newcommand{\mycomment}[3][]{%
+    \ifthenelse{\boolean{hidecomments} \or \boolean{@todonotes@disabled} }%
+    {#2}% margin notes off, just emit the raw text
+    {\refstepcounter{mycomment}% increment comment counter
+        \hl{#2}% highlight the target text
+        \todo[fancyline]% insert the margin note so it points to the END of the target text
+        {%
+            \protect\renewcommand{\baselinestretch}{0.75}% tighter line spacing
+            \selectfont\textbf{[\uppercase{#1}\themycomment]:}% insert option text, counter
+            ~#3 \par% insert comment body
+        }%
+    }%
+}
+\makeatother
+
+% VERY odd bug in soul, and while this works around it, it means that the specname *will not be highlighted* when pointed to by a \mycomment
+\soulregister{\specname}{0}
+
+% Macros for checking the existence or emptiness of a file.
+% They follow the \ifthenelse idiom
+\def\firstoftwo#1#2{#1}
+\def\secondoftwo#1#2{#2}
+
+\def\iffileexistelse#1{%
+  \expandafter\ifx\expandafter&\pdffilesize{#1}&%
+    \expandafter\secondoftwo
+  \else
+    \expandafter\firstoftwo
+  \fi
+}
+
+\def\iffileemptyelse#1{%
+  \ifnum0\pdffilesize{#1}>0
+    \expandafter\secondoftwo
+  \else
+    \expandafter\firstoftwo
+  \fi
+}
+
+\def\test#1{%
+  \iffileexistelse{#1}{File #1 exists}{File #1 doesn't exist}
+  \iffileemptyelse{#1}{File #1 is empty}{File #1 isn't empty}\par
+}
+
+
+\newcommand{\ifnotemptyfileinputwithpre}[2]{
+    \iffileexistelse{#1}{
+        \iffileemptyelse{#1}{}{
+            #2
+            \input{#1}
+        }
+    }
+}

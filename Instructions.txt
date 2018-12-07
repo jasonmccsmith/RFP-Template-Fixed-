@@ -1,0 +1,30 @@
+OMG RFP Template Instructions
+
+1) Files not to change
+    Do not change the following files:
+    omg.sty:            Sets up the OMG formatting style, do not alter
+    omg_rfp.sty:        RFP specific tweaks and the title page, do not alter
+    _RFP_Template.tex:  This is boilerplate for the RFP, nothing to edit here
+
+2) Setup file
+    _RFP_Setup.tex is currently designed to be filled in by the authors.  At some point in the future, it will be controlled solely by OMG Staff, and will be placed in list 1 above.
+    There is a list of variables to set the value of, it should be self evident, but just in case it's not...
+    \setvalue{\variableName}{value}
+    Change only the value portion.
+    Further, \iprmode can only take one of four values: a blank value, 'rand', 'rflimited' or 'nonassert'.  Setting this will eliminate much of the red fill in the blank boilerplate in the Template, and will also automatically generate the correct legal clauses in Section 6.10.
+
+3) RFP_UserPreamble.tex
+    User created LaTeX commands, etc, go here, just in case you're a LaTeX guru.  If not, there's nothing to do here except uncomment the \SetWatermarkText line when you're done with your document by removing the '%' at the beginning of the line.  This will remove the DRAFT watermark for final submission.
+
+4) Objective
+    RFP_0-Objective.tex is the text on the title page, before the Table of Contents.
+
+5) Section 6, Appendix A
+    All subsections of Section 6 *with the exception of 6.10 IPR Mode* have their own files.  The section names, etc, are taken care of for you in _RFP_Template.tex, you literally just need to fill in the content.  The goal is that all of this can be done using a basic LaTeX WYSIWYG editor, so that you don't need to know any LaTeX at all.
+
+5a) Requirements
+    Sections 6.5 and 6.6 are Mandatory Requirements and Non-Mandatory Features.  The omg.sty file creates new subsections specifically for requirements.  \requirement{title} and \subrequirement{title} will create REQ N and N.N sections for you.  You'll note that REQ becomes OPT in Section 6.6, if you wish to change the label (REQ or OPT), use \setvalue{\reqlabel}{FOO\xspace} and \setvalue{\subreqlabel}{FOO\xspace} to change it to FOO.  This renaming will be rolled into a WYSIWYG editor as soon as possible.
+    These are handled differently so that they are automatically scrapeable by scripts.
+
+6) Section 7, Appendix C
+    These are optional files, if the value of the files is empty, the sections will be deleted from the document.
